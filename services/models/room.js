@@ -8,11 +8,13 @@ const participantsValidator = (participants) => {
 const roomSchema = 
     mongoose.Schema({
         name: { type: String, required: true },
-        creationDate: { type: Date, required: true },
         admin: {
             type:mongoose.Schema.Types.ObjectId,
             ref:'User',
+            required: true
         },
+        description: {type: String},
+        tags: [{type: String}],
         participants: [{
             type:mongoose.Schema.Types.ObjectId,
             ref:'User',

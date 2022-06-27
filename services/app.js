@@ -1,13 +1,15 @@
 import express from "express";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
+import cors from "cors";
 
 import userRoutes from "./routes/user.js";
+import roomRoutes from "./routes/room.js"
 
 const app = express();
 
 mongoose.connect(
-    "mongodb://localhost:27017/CoLabPrueba"
+    process.env.MONGO_URL|| "mongodb://CoLab" 
 ).catch(error => {
     console.log(error);
 });
@@ -15,19 +17,9 @@ mongoose.connect(
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use((_req, _res, _next) => {
-    _res.setHeader("Access-Control-Allow-Origin", "*");
-    _res.setHeader(
-      "Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-    );
-    _res.setHeader(
-      "Access-Control-Allow-Methods",
-      "GET, POST, PATCH, DELETE, OPTIONS"
-    );
-    _next();
-});
+app.use(cors());
 
 app.use("/api/user", userRoutes);
+app.use("/api/room", roomRoutes);
 
 export default app;
